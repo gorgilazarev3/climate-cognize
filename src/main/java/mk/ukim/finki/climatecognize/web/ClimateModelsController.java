@@ -67,6 +67,16 @@ public class ClimateModelsController {
                 new HttpEntity<String>(object);
         RestTemplate restTemplate = new RestTemplate();
         String res = restTemplate.postForObject(uri, request, String.class);
+        if(res.contains("\\n"))
+            res = res.replace("\\n","");
+        if(res.contains("\\")) {
+            res = res.replace("\\","");
+            if(res.contains("\"{"))
+                res = res.replace("\"{","{");
+            if(res.contains("}\""))
+                res = res.replace("}\"","}");
+        }
+
         ClimateMLModelResponse response = ClimateMLModelResponse.fromJson(res);
         model.addAttribute("response", response);
         if(response != null) {
@@ -78,7 +88,7 @@ public class ClimateModelsController {
     }
 
     @PostMapping("/sentiment")
-    public ResponseEntity<ClimateMLModelResponse> sentiment(@RequestParam String input_data, Model model) throws Exception {
+    public ResponseEntity<ClimateMLModelResponse> sentiment(@RequestParam String input_data, @RequestParam String chosen_model, Model model) throws Exception {
         String inputDataString = "";
         String url = env.getProperty("ml-models-url");
         if(url != null && url.endsWith("/")) {
@@ -87,7 +97,9 @@ public class ClimateModelsController {
         else {
             inputDataString = "/climate-sentiment?input_data=";
         }
-        String uri = url + inputDataString + input_data;
+        String chosenModel = "&chosen_model=";
+        chosenModel = chosenModel + chosen_model;
+        String uri = url + inputDataString + input_data + chosenModel;
         String object = "{ \"input_data\":\"  " + input_data + "\"}";
         HttpEntity<String> request =
                 new HttpEntity<String>(object);
@@ -104,7 +116,7 @@ public class ClimateModelsController {
     }
 
     @PostMapping("/specificity")
-    public ResponseEntity<ClimateMLModelResponse> specificity(@RequestParam String input_data, Model model) throws Exception {
+    public ResponseEntity<ClimateMLModelResponse> specificity(@RequestParam String input_data, @RequestParam String chosen_model, Model model) throws Exception {
         String inputDataString = "";
         String url = env.getProperty("ml-models-url");
         if(url != null && url.endsWith("/")) {
@@ -113,7 +125,9 @@ public class ClimateModelsController {
         else {
             inputDataString = "/climate-specificity?input_data=";
         }
-        String uri = url + inputDataString + input_data;
+        String chosenModel = "&chosen_model=";
+        chosenModel = chosenModel + chosen_model;
+        String uri = url + inputDataString + input_data + chosenModel;
         String object = "{ \"input_data\":\"  " + input_data + "\"}";
         HttpEntity<String> request =
                 new HttpEntity<String>(object);
@@ -130,7 +144,7 @@ public class ClimateModelsController {
     }
 
     @PostMapping("/commitments-actions")
-    public ResponseEntity<ClimateMLModelResponse> commitments(@RequestParam String input_data, Model model) throws Exception {
+    public ResponseEntity<ClimateMLModelResponse> commitments(@RequestParam String input_data, @RequestParam String chosen_model, Model model) throws Exception {
         String inputDataString = "";
         String url = env.getProperty("ml-models-url");
         if(url != null && url.endsWith("/")) {
@@ -139,7 +153,9 @@ public class ClimateModelsController {
         else {
             inputDataString = "/climate-commitments-actions?input_data=";
         }
-        String uri = url + inputDataString + input_data;
+        String chosenModel = "&chosen_model=";
+        chosenModel = chosenModel + chosen_model;
+        String uri = url + inputDataString + input_data + chosenModel;
         String object = "{ \"input_data\":\"  " + input_data + "\"}";
         HttpEntity<String> request =
                 new HttpEntity<String>(object);
@@ -156,7 +172,7 @@ public class ClimateModelsController {
     }
 
     @PostMapping("/tcfd")
-    public ResponseEntity<ClimateMLModelResponse> tcfd(@RequestParam String input_data, Model model) throws Exception {
+    public ResponseEntity<ClimateMLModelResponse> tcfd(@RequestParam String input_data, @RequestParam String chosen_model, Model model) throws Exception {
         String inputDataString = "";
         String url = env.getProperty("ml-models-url");
         if(url != null && url.endsWith("/")) {
@@ -165,7 +181,9 @@ public class ClimateModelsController {
         else {
             inputDataString = "/climate-tcfd?input_data=";
         }
-        String uri = url + inputDataString + input_data;
+        String chosenModel = "&chosen_model=";
+        chosenModel = chosenModel + chosen_model;
+        String uri = url + inputDataString + input_data + chosenModel;
         String object = "{ \"input_data\":\"  " + input_data + "\"}";
         HttpEntity<String> request =
                 new HttpEntity<String>(object);
