@@ -39,5 +39,10 @@ public class UserServiceImpl implements UserService {
         User user = new User(username,passwordEncoder.encode(password),name,surname,userRole);
         return userRepository.save(user);
     }
+
+    @Override
+    public User saveChanges(User user) {
+        return userRepository.save(user);
+    }
 }
 

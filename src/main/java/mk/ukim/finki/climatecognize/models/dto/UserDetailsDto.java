@@ -11,11 +11,15 @@ import mk.ukim.finki.climatecognize.models.enumerations.Role;
 public class UserDetailsDto {
     private String username;
     private Role role;
+    private String name;
+    private String surname;
 
     public static UserDetailsDto of(User user) {
         UserDetailsDto details = new UserDetailsDto();
         details.username = user.getUsername();
         details.role = user.getRole();
+        details.name = user.getName();
+        details.surname = user.getSurname();
         return details;
     }
 }
