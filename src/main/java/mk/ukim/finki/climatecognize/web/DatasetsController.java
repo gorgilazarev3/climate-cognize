@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/datasets")
 public class DatasetsController {
     private final DatasetService datasetService;
@@ -25,6 +25,18 @@ public class DatasetsController {
     @GetMapping("/getAll")
     public List<Dataset> getAll() {
         return datasetService.findAllDatasets();
+    }
+
+    @GetMapping("/getById/{id}")
+    public Dataset getById(@PathVariable String id) {
+        return datasetService.getDatasetById(id);
+    }
+
+    @PutMapping("/likeDataset/{id}")
+    public Dataset likeDataset(@PathVariable String id) {
+        Dataset ds = datasetService.getDatasetById(id);
+        ds.setNumLikes(ds.getNumLikes() + 1);
+        return datasetService.updateDataset(ds);
     }
 
     @PostMapping("/createNewDataset")
