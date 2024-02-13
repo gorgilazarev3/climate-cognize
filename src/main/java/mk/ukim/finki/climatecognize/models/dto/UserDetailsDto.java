@@ -13,6 +13,7 @@ public class UserDetailsDto {
     private Role role;
     private String name;
     private String surname;
+    private boolean isPremium;
 
     public static UserDetailsDto of(User user) {
         UserDetailsDto details = new UserDetailsDto();
@@ -20,6 +21,7 @@ public class UserDetailsDto {
         details.role = user.getRole();
         details.name = user.getName();
         details.surname = user.getSurname();
+        details.isPremium = false;
         return details;
     }
 }

@@ -2,13 +2,11 @@ package mk.ukim.finki.climatecognize.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import mk.ukim.finki.climatecognize.models.ClimateMLModel;
-import mk.ukim.finki.climatecognize.models.Dataset;
-import mk.ukim.finki.climatecognize.models.DatasetEntry;
-import mk.ukim.finki.climatecognize.models.User;
+import mk.ukim.finki.climatecognize.models.*;
 import mk.ukim.finki.climatecognize.models.enumerations.Role;
 import mk.ukim.finki.climatecognize.repository.ClimateModelRepository;
 import mk.ukim.finki.climatecognize.repository.DatasetRepository;
+import mk.ukim.finki.climatecognize.repository.UserExtensionRepository;
 import mk.ukim.finki.climatecognize.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -22,6 +20,7 @@ public class DataInitializer {
     private UserRepository userRepository;
     private ClimateModelRepository climateModelRepository;
     private DatasetRepository datasetRepository;
+    private UserExtensionRepository userExtensionRepository;
 
     private PasswordEncoder passwordEncoder;
 
@@ -44,6 +43,23 @@ public class DataInitializer {
         user2.setRole(Role.ROLE_USER);
 
         userRepository.save(user2);
+
+    }
+
+    private void createUsersExtensions() {
+        String username1 = "admin";
+        UserExtension user = new UserExtension();
+        user.setUsername(username1);
+        user.setPremiumUser(false);
+        user.setEmail("admin@user.com");
+        userExtensionRepository.save(user);
+
+        String username2 = "user";
+        UserExtension user2 = new UserExtension();
+        user.setUsername(username2);
+        user.setPremiumUser(false);
+        user.setEmail("user@user.com");
+        userExtensionRepository.save(user);
 
     }
 
@@ -86,6 +102,7 @@ public class DataInitializer {
         List<User> usersList = userRepository.findAll();
         List<ClimateMLModel> modelsList = climateModelRepository.findAll();
         List<Dataset> datasets = datasetRepository.findAll();
+        List<UserExtension> usersExtendsList = userExtensionRepository.findAll();
         if (usersList.size()==0) {
             createUsers();
         }
@@ -94,6 +111,9 @@ public class DataInitializer {
         }
         if(datasets.isEmpty()) {
             createDataset();
+        }
+        if(usersExtendsList.isEmpty()) {
+            createUsersExtensions();
         }
 
     }

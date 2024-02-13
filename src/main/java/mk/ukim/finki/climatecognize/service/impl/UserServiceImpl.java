@@ -2,7 +2,9 @@ package mk.ukim.finki.climatecognize.service.impl;
 
 import lombok.SneakyThrows;
 import mk.ukim.finki.climatecognize.models.User;
+import mk.ukim.finki.climatecognize.models.UserExtension;
 import mk.ukim.finki.climatecognize.models.enumerations.Role;
+import mk.ukim.finki.climatecognize.repository.UserExtensionRepository;
 import mk.ukim.finki.climatecognize.repository.UserRepository;
 import mk.ukim.finki.climatecognize.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,16 +12,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserExtensionRepository userExtensionRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserExtensionRepository userExtensionRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userExtensionRepository = userExtensionRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -39,6 +41,8 @@ public class UserServiceImpl implements UserService {
         if(this.userRepository.findByUsername(username).isPresent())
             throw new Exception(username + " username is not found");
         User user = new User(username,passwordEncoder.encode(password),name,surname,userRole);
+        UserExtension extension = new UserExtension(username, username + "@user.com", false);
+        userExtensionRepository.save(extension);
         return userRepository.save(user);
     }
 

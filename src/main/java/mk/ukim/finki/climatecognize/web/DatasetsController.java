@@ -32,10 +32,22 @@ public class DatasetsController {
         return datasetService.getDatasetById(id);
     }
 
+    @GetMapping("/getForUser/{username}")
+    public List<Dataset> getForUser(@PathVariable String username) {
+        return datasetService.findDatasetsByUser(username);
+    }
+
     @PutMapping("/likeDataset/{id}")
     public Dataset likeDataset(@PathVariable String id) {
         Dataset ds = datasetService.getDatasetById(id);
         ds.setNumLikes(ds.getNumLikes() + 1);
+        return datasetService.updateDataset(ds);
+    }
+
+    @PutMapping("/downloadDataset/{id}")
+    public Dataset downloadDataset(@PathVariable String id) {
+        Dataset ds = datasetService.getDatasetById(id);
+        ds.setNumDownloads(ds.getNumDownloads() + 1);
         return datasetService.updateDataset(ds);
     }
 

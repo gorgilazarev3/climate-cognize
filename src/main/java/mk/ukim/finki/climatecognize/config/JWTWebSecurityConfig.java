@@ -45,7 +45,7 @@ public class JWTWebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/assets/**", "/api/auth/register","/api/auth/login","/api/climate/**", "/error").permitAll()
+                .requestMatchers("/assets/**", "/api/auth/register","/api/auth/login","/api/climate/**", "/error", "/api/datasets/get*").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/climate/dataset").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
