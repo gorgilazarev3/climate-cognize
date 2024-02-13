@@ -55,6 +55,21 @@ public class AuthenticationController {
 
     }
 
+    @PostMapping("/changePassword")
+    public String changePassword(HttpServletRequest request,
+                             HttpServletResponse response,
+                             @RequestParam String username,
+                             @RequestParam(name = "old-password") String oldPassword,
+                             @RequestParam(name = "new-password") String password,
+                             @RequestParam(name = "confirm-password") String confirmPassword) throws JsonProcessingException {
+        User createdUser = (User) userService.changePassword(username, oldPassword, password, confirmPassword);
+        if(createdUser != null) {
+            return createdUser.getUsername();
+        }
+        else return "error";
+
+    }
+
 
 
 }

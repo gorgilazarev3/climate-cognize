@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,6 +39,20 @@ public class UserServiceImpl implements UserService {
         if(this.userRepository.findByUsername(username).isPresent())
             throw new Exception(username + " username is not found");
         User user = new User(username,passwordEncoder.encode(password),name,surname,userRole);
+        return userRepository.save(user);
+    }
+
+    @SneakyThrows
+    @Override
+    public User changePassword(String username, String oldPassword, String password, String repeatPassword) {
+        if (username==null || username.isEmpty()  || password==null || password.isEmpty())
+            throw new Exception("Cannot find this account");
+        if (!password.equals(repeatPassword))
+            throw new Exception("Passwords do not match");
+        User user = this.userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User cannot be found"));
+        if(!passwordEncoder.matches(oldPassword, user.getPassword()))
+            throw new Exception("Old password is not correct");
+        user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
 

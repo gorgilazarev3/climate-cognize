@@ -3,9 +3,12 @@ package mk.ukim.finki.climatecognize.config;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import mk.ukim.finki.climatecognize.models.ClimateMLModel;
+import mk.ukim.finki.climatecognize.models.Dataset;
+import mk.ukim.finki.climatecognize.models.DatasetEntry;
 import mk.ukim.finki.climatecognize.models.User;
 import mk.ukim.finki.climatecognize.models.enumerations.Role;
 import mk.ukim.finki.climatecognize.repository.ClimateModelRepository;
+import mk.ukim.finki.climatecognize.repository.DatasetRepository;
 import mk.ukim.finki.climatecognize.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,7 @@ public class DataInitializer {
 
     private UserRepository userRepository;
     private ClimateModelRepository climateModelRepository;
+    private DatasetRepository datasetRepository;
 
     private PasswordEncoder passwordEncoder;
 
@@ -60,15 +64,36 @@ public class DataInitializer {
         climateModelRepository.save(ourModel);
     }
 
+    private void createDataset() {
+        DatasetEntry entry = new DatasetEntry();
+        entry.addEntry(1.2);
+        entry.addEntry("test3");
+        DatasetEntry entry2 = new DatasetEntry();
+        entry2.addEntry(31);
+        entry2.addEntry("fqeo");
+        Dataset dataset = new Dataset("user", "test-dataset", "Sample Description", false, "English (en)", "", "");
+        dataset.addColumn("test_number");
+        dataset.addColumn("test_string");
+        dataset.addRow(entry);
+        dataset.addRow(entry2);
+        dataset.addTag("test-tag");
+        dataset.addType("number");
+        dataset.addType("string");
+        datasetRepository.save(dataset);
+    }
     @PostConstruct
     public void init() {
         List<User> usersList = userRepository.findAll();
         List<ClimateMLModel> modelsList = climateModelRepository.findAll();
+        List<Dataset> datasets = datasetRepository.findAll();
         if (usersList.size()==0) {
             createUsers();
         }
         if(modelsList.isEmpty()) {
             createModels();
+        }
+        if(datasets.isEmpty()) {
+            createDataset();
         }
 
     }
