@@ -51,6 +51,11 @@ public class DatasetsController {
         return datasetService.updateDataset(ds);
     }
 
+    @DeleteMapping("/deleteDataset/{id}")
+    public Dataset deleteDataset(@PathVariable String id) {
+        return datasetService.deleteDatasetById(id);
+    }
+
     @PostMapping("/createNewDataset")
     public ResponseEntity<String> createNewDataset(@RequestParam String author,
                                            @RequestParam(required = false) String name,

@@ -38,6 +38,13 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
+    public Dataset deleteDatasetById(String id) {
+        Dataset dataset = datasetRepository.findById(id).orElseThrow(() -> new RuntimeException("Dataset with that ID doesn't exist"));
+        datasetRepository.deleteById(id);
+        return dataset;
+    }
+
+    @Override
     public void createNewDataset(String author, String name, String description, boolean isPrivate, String language, String task, String split, List<String> columns, List<DatasetEntry> rows, List<String> tags, List<String> types) {
         Dataset dataset = new Dataset(author, name, description, isPrivate, language, task, split);
         for (String column : columns) {
