@@ -1,6 +1,7 @@
 package mk.ukim.finki.climatecognize.service.impl;
 
 import lombok.SneakyThrows;
+import mk.ukim.finki.climatecognize.constants.JwtAuthConstants;
 import mk.ukim.finki.climatecognize.models.User;
 import mk.ukim.finki.climatecognize.models.UserExtension;
 import mk.ukim.finki.climatecognize.models.enumerations.Role;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
         if(this.userRepository.findByUsername(username).isPresent())
             throw new Exception(username + " username is not found");
         User user = new User(username,passwordEncoder.encode(password),name,surname,userRole);
-        UserExtension extension = new UserExtension(username, username + "@user.com", false);
+        UserExtension extension = new UserExtension(username, username + JwtAuthConstants.DEFAULT_MAIL_EXTENSION, false);
         userExtensionRepository.save(extension);
         return userRepository.save(user);
     }

@@ -1,5 +1,6 @@
 package mk.ukim.finki.climatecognize.web;
 
+import mk.ukim.finki.climatecognize.constants.UserFormKeys;
 import mk.ukim.finki.climatecognize.models.User;
 import mk.ukim.finki.climatecognize.models.UserExtension;
 import mk.ukim.finki.climatecognize.models.dto.UserDetailsDto;
@@ -20,7 +21,7 @@ public class UsersController {
     }
 
     @PostMapping("/getUserInfo")
-    public UserDetailsDto getUserInfo(@RequestParam("username") String username) {
+    public UserDetailsDto getUserInfo(@RequestParam(UserFormKeys.USERNAME) String username) {
         User user = (User) this.userService.loadUserByUsername(username);
         UserDetailsDto details = UserDetailsDto.of(user);
         UserExtension userExtension = this.userExtensionRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Error while processing subscription, user not found"));
@@ -29,9 +30,9 @@ public class UsersController {
     }
 
     @PostMapping("/changeProfileInfo")
-    public UserDetailsDto changeProfileInfo(@RequestParam("username") String username,
-                                            @RequestParam("name") String name,
-                                            @RequestParam("surname") String surname) {
+    public UserDetailsDto changeProfileInfo(@RequestParam(UserFormKeys.USERNAME) String username,
+                                            @RequestParam(UserFormKeys.NAME) String name,
+                                            @RequestParam(UserFormKeys.SURNAME) String surname) {
         User user = (User) this.userService.loadUserByUsername(username);
         user.setName(name);
         user.setSurname(surname);
@@ -41,7 +42,7 @@ public class UsersController {
     }
 
     @PutMapping("/subscribeToPro")
-    public UserDetailsDto subscribeToPro(@RequestParam("username") String username) {
+    public UserDetailsDto subscribeToPro(@RequestParam(UserFormKeys.USERNAME) String username) {
         User user = (User) this.userService.loadUserByUsername(username);
         UserExtension userExtension = this.userExtensionRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Error while processing subscription, user not found"));
         userExtension.setPremiumUser(true);

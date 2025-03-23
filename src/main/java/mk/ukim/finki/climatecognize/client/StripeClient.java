@@ -3,6 +3,9 @@ package mk.ukim.finki.climatecognize.client;
 import com.stripe.Stripe;
 import com.stripe.model.Charge;
 import com.stripe.model.Customer;
+import mk.ukim.finki.climatecognize.constants.StripeChargeParamKeys;
+import mk.ukim.finki.climatecognize.constants.StripeConstants;
+import mk.ukim.finki.climatecognize.constants.StripeCustomerParamKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -16,12 +19,12 @@ public class StripeClient {
     @Autowired
     StripeClient(Environment env) {
         this.env = env;
-        Stripe.apiKey = this.env.getProperty("stripe-secret-key");
+        Stripe.apiKey = this.env.getProperty(StripeConstants.STRIPE_SECRET_KEY_PROPERTY);
     }
     public Customer createCustomer(String token, String email) throws Exception {
         Map<String, Object> customerParams = new HashMap<String, Object>();
-        customerParams.put("email", email);
-        customerParams.put("source", token);
+        customerParams.put(StripeCustomerParamKeys.EMAIL, email);
+        customerParams.put(StripeCustomerParamKeys.SOURCE, token);
         return Customer.create(customerParams);
     }
     private Customer getCustomer(String id) throws Exception {
@@ -29,20 +32,18 @@ public class StripeClient {
     }
     public Charge chargeNewCard(String token, double amount) throws Exception {
         Map<String, Object> chargeParams = new HashMap<String, Object>();
-        chargeParams.put("amount", (int)(amount * 100));
-        chargeParams.put("currency", "USD");
-        chargeParams.put("source", token);
-        Charge charge = Charge.create(chargeParams);
-        return charge;
+        chargeParams.put(StripeChargeParamKeys.AMOUNT, (int)(amount * 100));
+        chargeParams.put(StripeChargeParamKeys.CURRENCY, StripeConstants.DEFAULT_CURRENCY);
+        chargeParams.put(StripeChargeParamKeys.SOURCE, token);
+        return Charge.create(chargeParams);
     }
     public Charge chargeCustomerCard(String customerId, int amount) throws Exception {
         String sourceCard = getCustomer(customerId).getDefaultSource();
         Map<String, Object> chargeParams = new HashMap<String, Object>();
-        chargeParams.put("amount", amount);
-        chargeParams.put("currency", "USD");
-        chargeParams.put("customer", customerId);
-        chargeParams.put("source", sourceCard);
-        Charge charge = Charge.create(chargeParams);
-        return charge;
+        chargeParams.put(StripeChargeParamKeys.AMOUNT, amount);
+        chargeParams.put(StripeChargeParamKeys.CURRENCY, StripeConstants.DEFAULT_CURRENCY);
+        chargeParams.put(StripeChargeParamKeys.CUSTOMER, customerId);
+        chargeParams.put(StripeChargeParamKeys.SOURCE, sourceCard);
+        return Charge.create(chargeParams);
     }
 }

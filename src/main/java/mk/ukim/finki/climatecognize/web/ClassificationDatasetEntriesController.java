@@ -5,6 +5,7 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mk.ukim.finki.climatecognize.constants.DatasetConstants;
 import mk.ukim.finki.climatecognize.models.ClassificationDatasetEntry;
 import mk.ukim.finki.climatecognize.service.ClassificationDatasetEntryService;
 import org.springframework.http.HttpHeaders;
@@ -85,7 +86,7 @@ public class ClassificationDatasetEntriesController {
             throws Exception {
 
         //set file name and content type
-        String filename = "dataset.csv";
+        String filename = DatasetConstants.DEFAULT_CSV_FILE_NAME;
 
         response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,

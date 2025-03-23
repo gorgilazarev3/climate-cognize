@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import mk.ukim.finki.climatecognize.constants.DatasetConstants;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -56,12 +57,12 @@ public class Dataset {
         numDownloads = 0;
         numLikes = 0;
         lastUpdated = LocalDateTime.now();
-        task = "Text Classification";
+        task = DatasetConstants.DEFAULT_TASK;
         description = "";
         tags = new ArrayList<>();
-        split = "train";
-        language = "English (en)";
-        name = "dataset";
+        split = DatasetConstants.DEFAULT_SPLIT;
+        language = DatasetConstants.DEFAULT_LANGUAGE;
+        name = DatasetConstants.DEFAULT_NAME;
         isPrivate = false;
         types = new ArrayList<>();
     }
@@ -94,17 +95,17 @@ public class Dataset {
         numLikes = 0;
         lastUpdated = LocalDateTime.now();
         if(task.isEmpty()) {
-            task = "Text Classification";
+            task = DatasetConstants.DEFAULT_TASK;
         }
         this.task = task;
         this.description = description;
         tags = new ArrayList<>();
         if(split.isEmpty()) {
-            split = "train";
+            split = DatasetConstants.DEFAULT_SPLIT;
         }
         this.split = split;
         if(language.isEmpty()) {
-            language = "English (en)";
+            language = DatasetConstants.DEFAULT_LANGUAGE;
         }
         this.language = language;
         this.name = name;

@@ -11,7 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import mk.ukim.finki.climatecognize.config.JwtAuthConstants;
+import mk.ukim.finki.climatecognize.constants.JwtAuthConstants;
 import mk.ukim.finki.climatecognize.models.User;
 import mk.ukim.finki.climatecognize.models.dto.UserDetailsDto;
 import org.springframework.security.authentication.AuthenticationManager;

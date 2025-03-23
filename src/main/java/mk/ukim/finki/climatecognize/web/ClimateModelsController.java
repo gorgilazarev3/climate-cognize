@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO: refactor this whole controller
+
 @RestController
 @RequestMapping("/api/climate")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -210,19 +212,6 @@ public class ClimateModelsController {
             inputDataString = "/train/climate-detect-our";
         }
         JSONObject jsonObject = new JSONObject();
-//        Object obj = new Object() {
-//            public List<String> objects =  classificationDatasetEntryService.getAllEntries().stream().map(entry -> entry.getInput()).toList();
-//
-////            @Override
-////            public String toString() {
-////                return "{" +
-////                        "\"objects\":" + objects +
-////                        '}';
-//@Override
-//public String toString() {
-//    return objects.toString();
-//            }
-//        };
 
         jsonObject.put("entries", classificationDatasetEntryService.getAllEntries().stream().filter(entry -> entry.getTask().equalsIgnoreCase("climate_detection")).map(entry -> {
             return new Object() {
@@ -245,10 +234,7 @@ public class ClimateModelsController {
         HttpEntity<String> request =
                 new HttpEntity<String>(jsonObject.toString(), headers);
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(jsonObject.toString());
         String res = restTemplate.postForObject(uri, request, String.class);
-        //ClimateMLModelResponse response = ClimateMLModelResponse.fromJson(res);
-        //model.addAttribute("response", response);
         if(res != null) {
             return ResponseEntity.ok(res);
         }
@@ -269,19 +255,6 @@ public class ClimateModelsController {
             inputDataString = "/train/climate-detect";
         }
         JSONObject jsonObject = new JSONObject();
-//        Object obj = new Object() {
-//            public List<String> objects =  classificationDatasetEntryService.getAllEntries().stream().map(entry -> entry.getInput()).toList();
-//
-////            @Override
-////            public String toString() {
-////                return "{" +
-////                        "\"objects\":" + objects +
-////                        '}';
-//@Override
-//public String toString() {
-//    return objects.toString();
-//            }
-//        };
 
         jsonObject.put("entries", classificationDatasetEntryService.getAllEntries().stream().filter(entry -> entry.getTask().equalsIgnoreCase("climate_detection")).map(entry -> {
             return new Object() {
@@ -304,10 +277,7 @@ public class ClimateModelsController {
         HttpEntity<String> request =
                 new HttpEntity<String>(jsonObject.toString(), headers);
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(jsonObject.toString());
         String res = restTemplate.postForObject(uri, request, String.class);
-        //ClimateMLModelResponse response = ClimateMLModelResponse.fromJson(res);
-        //model.addAttribute("response", response);
         if(res != null) {
             return ResponseEntity.ok(res);
         }
@@ -327,19 +297,6 @@ public class ClimateModelsController {
             inputDataString = "/train/climate-sentiment";
         }
         JSONObject jsonObject = new JSONObject();
-//        Object obj = new Object() {
-//            public List<String> objects =  classificationDatasetEntryService.getAllEntries().stream().map(entry -> entry.getInput()).toList();
-//
-////            @Override
-////            public String toString() {
-////                return "{" +
-////                        "\"objects\":" + objects +
-////                        '}';
-//@Override
-//public String toString() {
-//    return objects.toString();
-//            }
-//        };
 
         jsonObject.put("entries", classificationDatasetEntryService.getAllEntries().stream().filter(entry -> entry.getTask().equalsIgnoreCase("climate_sentiment")).map(entry -> {
             return new Object() {
@@ -362,10 +319,7 @@ public class ClimateModelsController {
         HttpEntity<String> request =
                 new HttpEntity<String>(jsonObject.toString(), headers);
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(jsonObject.toString());
         String res = restTemplate.postForObject(uri, request, String.class);
-        //ClimateMLModelResponse response = ClimateMLModelResponse.fromJson(res);
-        //model.addAttribute("response", response);
         if(res != null) {
             return ResponseEntity.ok(res);
         }
@@ -385,19 +339,6 @@ public class ClimateModelsController {
             inputDataString = "/train/climate-specificity";
         }
         JSONObject jsonObject = new JSONObject();
-//        Object obj = new Object() {
-//            public List<String> objects =  classificationDatasetEntryService.getAllEntries().stream().map(entry -> entry.getInput()).toList();
-//
-////            @Override
-////            public String toString() {
-////                return "{" +
-////                        "\"objects\":" + objects +
-////                        '}';
-//@Override
-//public String toString() {
-//    return objects.toString();
-//            }
-//        };
 
         jsonObject.put("entries", classificationDatasetEntryService.getAllEntries().stream().filter(entry -> entry.getTask().equalsIgnoreCase("climate_specificity")).map(entry -> {
             return new Object() {
@@ -420,10 +361,7 @@ public class ClimateModelsController {
         HttpEntity<String> request =
                 new HttpEntity<String>(jsonObject.toString(), headers);
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(jsonObject.toString());
         String res = restTemplate.postForObject(uri, request, String.class);
-        //ClimateMLModelResponse response = ClimateMLModelResponse.fromJson(res);
-        //model.addAttribute("response", response);
         if(res != null) {
             return ResponseEntity.ok(res);
         }
@@ -443,19 +381,6 @@ public class ClimateModelsController {
             inputDataString = "/train/climate-tcfd";
         }
         JSONObject jsonObject = new JSONObject();
-//        Object obj = new Object() {
-//            public List<String> objects =  classificationDatasetEntryService.getAllEntries().stream().map(entry -> entry.getInput()).toList();
-//
-////            @Override
-////            public String toString() {
-////                return "{" +
-////                        "\"objects\":" + objects +
-////                        '}';
-//@Override
-//public String toString() {
-//    return objects.toString();
-//            }
-//        };
 
         jsonObject.put("entries", classificationDatasetEntryService.getAllEntries().stream().filter(entry -> entry.getTask().equalsIgnoreCase("climate_tcfd_recommendations")).map(entry -> {
             return new Object() {
@@ -478,10 +403,7 @@ public class ClimateModelsController {
         HttpEntity<String> request =
                 new HttpEntity<String>(jsonObject.toString(), headers);
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(jsonObject.toString());
         String res = restTemplate.postForObject(uri, request, String.class);
-        //ClimateMLModelResponse response = ClimateMLModelResponse.fromJson(res);
-        //model.addAttribute("response", response);
         if(res != null) {
             return ResponseEntity.ok(res);
         }
@@ -501,19 +423,6 @@ public class ClimateModelsController {
             inputDataString = "/train/climate-commitments-actions";
         }
         JSONObject jsonObject = new JSONObject();
-//        Object obj = new Object() {
-//            public List<String> objects =  classificationDatasetEntryService.getAllEntries().stream().map(entry -> entry.getInput()).toList();
-//
-////            @Override
-////            public String toString() {
-////                return "{" +
-////                        "\"objects\":" + objects +
-////                        '}';
-//@Override
-//public String toString() {
-//    return objects.toString();
-//            }
-//        };
 
         jsonObject.put("entries", classificationDatasetEntryService.getAllEntries().stream().filter(entry -> entry.getTask().equalsIgnoreCase("climate_commitments_and_actions")).map(entry -> {
             return new Object() {
@@ -536,10 +445,7 @@ public class ClimateModelsController {
         HttpEntity<String> request =
                 new HttpEntity<String>(jsonObject.toString(), headers);
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println(jsonObject.toString());
         String res = restTemplate.postForObject(uri, request, String.class);
-        //ClimateMLModelResponse response = ClimateMLModelResponse.fromJson(res);
-        //model.addAttribute("response", response);
         if(res != null) {
             return ResponseEntity.ok(res);
         }
@@ -641,7 +547,6 @@ public class ClimateModelsController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             String uri = url + inputDataString;
-//            String object = "{ \"input_data\":\" {  \"objects\":\"" + classificationDatasetEntryService.getAllEntries().stream().filter(entry -> entry.getTask().equalsIgnoreCase("climate_detection")).map(entry -> entry.getInput()).toList() + "\"} \"}";
             HttpEntity<String> request =
                     new HttpEntity<String>(jsonObject.toString(), headers);
             RestTemplate restTemplate = new RestTemplate();
