@@ -1,6 +1,7 @@
 package mk.ukim.finki.climatecognize.service.impl;
 
 import mk.ukim.finki.climatecognize.models.ClassificationDatasetEntry;
+import mk.ukim.finki.climatecognize.models.exceptions.DatasetEntryNotFoundException;
 import mk.ukim.finki.climatecognize.repository.ClassificationDatasetEntryRepository;
 import mk.ukim.finki.climatecognize.service.ClassificationDatasetEntryService;
 import org.springframework.stereotype.Service;
@@ -35,12 +36,12 @@ public class ClassificationDatasetEntryServiceImpl implements ClassificationData
         if(toDelete.isPresent()) {
             this.repository.deleteById(id);
         }
-        return toDelete.orElseThrow(() -> new Exception("Dataset entry not found"));
+        return toDelete.orElseThrow(DatasetEntryNotFoundException::new);
     }
 
     @Override
     public ClassificationDatasetEntry getEntryById(Long id) throws Exception {
         Optional<ClassificationDatasetEntry> toReturn = this.repository.findById(id);
-        return toReturn.orElseThrow(() -> new Exception("Dataset entry not found"));
+        return toReturn.orElseThrow(DatasetEntryNotFoundException::new);
     }
 }

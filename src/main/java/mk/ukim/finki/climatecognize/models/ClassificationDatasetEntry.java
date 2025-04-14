@@ -63,17 +63,4 @@ public class ClassificationDatasetEntry {
         throw new Exception("Cannot parse JSON to ClassificationDatasetEntry");
     }
 
-    @Override
-    public String toString() {
-        return "ClassificationDatasetEntry{" +
-                "id=" + id +
-                ", input='" + input + '\'' +
-                ", predictedLabel='" + predictedLabel + '\'' +
-                ", trueLabel='" + trueLabel + '\'' +
-                ", score=" + score +
-                ", submittedBy='" + submittedBy + '\'' +
-                ", model='" + model + '\'' +
-                ", task='" + task + '\'' +
-                '}';
-    }
 }

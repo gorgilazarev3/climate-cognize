@@ -5,6 +5,9 @@ import mk.ukim.finki.climatecognize.constants.JwtAuthConstants;
 import mk.ukim.finki.climatecognize.models.User;
 import mk.ukim.finki.climatecognize.models.UserExtension;
 import mk.ukim.finki.climatecognize.models.enumerations.Role;
+import mk.ukim.finki.climatecognize.models.exceptions.IncorrectPasswordException;
+import mk.ukim.finki.climatecognize.models.exceptions.PasswordsDoNotMatchException;
+import mk.ukim.finki.climatecognize.models.exceptions.UserDoesNotExistException;
 import mk.ukim.finki.climatecognize.repository.UserExtensionRepository;
 import mk.ukim.finki.climatecognize.repository.UserRepository;
 import mk.ukim.finki.climatecognize.service.UserService;
@@ -36,11 +39,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String username, String password, String repeatPassword, String name, String surname, Role userRole) {
         if (username==null || username.isEmpty()  || password==null || password.isEmpty())
-            throw new Exception("Cannot find this account");
+            throw new UserDoesNotExistException();
         if (!password.equals(repeatPassword))
-            throw new Exception("Passwords do not match");
+            throw new PasswordsDoNotMatchException();
         if(this.userRepository.findByUsername(username).isPresent())
-            throw new Exception(username + " username is not found");
+            throw new UserDoesNotExistException();
         User user = new User(username,passwordEncoder.encode(password),name,surname,userRole);
         UserExtension extension = new UserExtension(username, username + JwtAuthConstants.DEFAULT_MAIL_EXTENSION, false);
         userExtensionRepository.save(extension);
@@ -51,12 +54,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User changePassword(String username, String oldPassword, String password, String repeatPassword) {
         if (username==null || username.isEmpty()  || password==null || password.isEmpty())
-            throw new Exception("Cannot find this account");
+            throw new UserDoesNotExistException();
         if (!password.equals(repeatPassword))
-            throw new Exception("Passwords do not match");
-        User user = this.userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User cannot be found"));
+            throw new PasswordsDoNotMatchException();
+        User user = this.userRepository.findByUsername(username).orElseThrow(UserDoesNotExistException::new);
         if(!passwordEncoder.matches(oldPassword, user.getPassword()))
-            throw new Exception("Old password is not correct");
+            throw new IncorrectPasswordException();
         user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }

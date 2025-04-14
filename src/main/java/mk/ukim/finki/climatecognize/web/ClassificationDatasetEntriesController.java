@@ -35,7 +35,7 @@ public class ClassificationDatasetEntriesController {
                                                                         @RequestParam double score,
                                                                         @RequestParam String model,
                                                                         @RequestParam String submittedBy,
-                                                                        @RequestParam String task) throws Exception {
+                                                                        @RequestParam String task) {
         ClassificationDatasetEntry entryObj = classificationDatasetEntryService.addNewEntry(input, predictedLabel, trueLabel, score, submittedBy, model, task);
         if(entryObj != null) {
             return ResponseEntity.ok(entryObj);
@@ -47,7 +47,7 @@ public class ClassificationDatasetEntriesController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
-    public ResponseEntity<List<ClassificationDatasetEntry>> getAllEntries(HttpServletRequest request) {
+    public ResponseEntity<List<ClassificationDatasetEntry>> getAllEntries() {
         try {
             List<ClassificationDatasetEntry> datasetEntries = classificationDatasetEntryService.getAllEntries();
             return ResponseEntity.ok(datasetEntries);
@@ -84,18 +84,16 @@ public class ClassificationDatasetEntriesController {
     @GetMapping("/export")
     public void exportCSV(HttpServletResponse response)
             throws Exception {
-
-        //set file name and content type
         String filename = DatasetConstants.DEFAULT_CSV_FILE_NAME;
 
         response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + filename + "\"");
-        //create a csv writer
+
         StatefulBeanToCsv<ClassificationDatasetEntry> writer = new StatefulBeanToCsvBuilder<ClassificationDatasetEntry>(response.getWriter())
                 .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR).withOrderedResults(false)
                 .build();
-        //write all data to csv file
+
         writer.write(classificationDatasetEntryService.getAllEntries());
 
     }

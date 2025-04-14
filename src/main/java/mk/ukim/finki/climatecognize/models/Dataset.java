@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import mk.ukim.finki.climatecognize.constants.DatasetConstants;
+import org.json.JSONException;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -140,6 +141,6 @@ public class Dataset {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new Exception("Cannot parse JSON to Dataset");
+        throw new JSONException("Cannot parse JSON to Dataset");
     }
 }

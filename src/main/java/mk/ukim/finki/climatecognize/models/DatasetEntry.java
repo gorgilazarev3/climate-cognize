@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.json.JSONException;
 
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class DatasetEntry {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new Exception("Cannot parse JSON to DatasetEntry");
+        throw new JSONException("Cannot parse JSON to DatasetEntry");
     }
 
 

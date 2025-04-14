@@ -41,13 +41,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public String doRegister(HttpServletRequest request,
-                             HttpServletResponse response,
-                             @RequestParam String username,
+    public String doRegister(@RequestParam String username,
                              @RequestParam String password,
                              @RequestParam String confirmPassword,
                              @RequestParam String name,
-                             @RequestParam String surname) throws JsonProcessingException {
+                             @RequestParam String surname) {
         User createdUser = userService.register(username, password, confirmPassword, name, surname, Role.ROLE_USER);
         if (createdUser != null) {
             return createdUser.getUsername();
@@ -56,12 +54,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/changePassword")
-    public String changePassword(HttpServletRequest request,
-                                 HttpServletResponse response,
-                                 @RequestParam String username,
+    public String changePassword(@RequestParam String username,
                                  @RequestParam(name = ChangePasswordFormKeys.OLD_PASSWORD) String oldPassword,
                                  @RequestParam(name = ChangePasswordFormKeys.NEW_PASSWORD) String password,
-                                 @RequestParam(name = ChangePasswordFormKeys.CONFIRM_PASSWORD) String confirmPassword) throws JsonProcessingException {
+                                 @RequestParam(name = ChangePasswordFormKeys.CONFIRM_PASSWORD) String confirmPassword) {
         User createdUser = (User) userService.changePassword(username, oldPassword, password, confirmPassword);
         if (createdUser != null) {
             return createdUser.getUsername();

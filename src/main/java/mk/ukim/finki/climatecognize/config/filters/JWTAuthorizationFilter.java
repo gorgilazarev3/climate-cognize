@@ -44,7 +44,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     public UsernamePasswordAuthenticationToken getToken(String header) throws JsonProcessingException {
-        // parse the token.
         String user = JWT.require(Algorithm.HMAC256(JwtAuthConstants.SECRET.getBytes()))
                 .build()
                 .verify(header.replace(JwtAuthConstants.TOKEN_PREFIX, ""))
