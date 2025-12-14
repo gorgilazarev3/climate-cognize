@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -41,6 +42,32 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @SneakyThrows
+    public Authentication attemptAuthentication(String username, String password) throws AuthenticationException {
+        User creds = null;
+        try {
+            if (username != null && password != null) {
+                creds = new User();
+                creds.setUsername(username);
+                creds.setPassword(password);
+            }
+            else {
+                throw new UsernameNotFoundException("No valid username and password");
+            }
+        } catch (UsernameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (creds == null) {
+            throw new UserDoesNotExistException();
+        }
+        UserDetails userDetails = userDetailsService.loadUserByUsername(creds.getUsername());
+        if (!passwordEncoder.matches(creds.getPassword(), userDetails.getPassword())) {
+            throw new PasswordsDoNotMatchException();
+        }
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), creds.getPassword(), userDetails.getAuthorities()));
     }
 
 

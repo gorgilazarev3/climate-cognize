@@ -29,9 +29,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String doLogin(HttpServletRequest request,
+    public String doLogin(@RequestParam String username,
+                          @RequestParam String password,
+                          HttpServletRequest request,
                           HttpServletResponse response) throws JsonProcessingException, JSONException {
-        Authentication auth = this.filter.attemptAuthentication(request, response);
+        Authentication auth = this.filter.attemptAuthentication(username, password);
         JSONObject responseObj = new JSONObject();
         responseObj.put(JwtAuthConstants.JWT_RESPONSE_KEY, this.filter.generateJwt(response, auth));
         User user = (User) auth.getPrincipal();

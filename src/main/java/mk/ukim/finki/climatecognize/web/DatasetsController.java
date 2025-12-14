@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import mk.ukim.finki.climatecognize.models.Dataset;
 import mk.ukim.finki.climatecognize.models.DatasetEntry;
+import mk.ukim.finki.climatecognize.models.exceptions.DatasetNotFoundException;
 import mk.ukim.finki.climatecognize.service.DatasetService;
 import org.json.JSONArray;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class DatasetsController {
     }
 
     @GetMapping("/getById/{id}")
-    public Dataset getById(@PathVariable String id) {
+    public Dataset getById(@PathVariable String id) throws DatasetNotFoundException {
         return datasetService.getDatasetById(id);
     }
 
@@ -38,21 +39,21 @@ public class DatasetsController {
     }
 
     @PutMapping("/likeDataset/{id}")
-    public Dataset likeDataset(@PathVariable String id) {
+    public Dataset likeDataset(@PathVariable String id) throws DatasetNotFoundException {
         Dataset ds = datasetService.getDatasetById(id);
         ds.setNumLikes(ds.getNumLikes() + 1);
         return datasetService.updateDataset(ds);
     }
 
     @PutMapping("/downloadDataset/{id}")
-    public Dataset downloadDataset(@PathVariable String id) {
+    public Dataset downloadDataset(@PathVariable String id) throws DatasetNotFoundException {
         Dataset ds = datasetService.getDatasetById(id);
         ds.setNumDownloads(ds.getNumDownloads() + 1);
         return datasetService.updateDataset(ds);
     }
 
     @DeleteMapping("/deleteDataset/{id}")
-    public Dataset deleteDataset(@PathVariable String id) {
+    public Dataset deleteDataset(@PathVariable String id) throws DatasetNotFoundException {
         return datasetService.deleteDatasetById(id);
     }
 
