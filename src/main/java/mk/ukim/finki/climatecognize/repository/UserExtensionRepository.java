@@ -15,12 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserExtensionRepository extends JpaRepository<UserExtension, String> {
-
-
-//    Optional<User> findByUsernameAndPassword(String username, String password);
-
     Optional<UserExtension> findByUsername(String username);
-
 }
 
 

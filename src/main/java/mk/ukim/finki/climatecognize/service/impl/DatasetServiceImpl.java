@@ -2,6 +2,7 @@ package mk.ukim.finki.climatecognize.service.impl;
 
 import mk.ukim.finki.climatecognize.models.Dataset;
 import mk.ukim.finki.climatecognize.models.DatasetEntry;
+import mk.ukim.finki.climatecognize.models.exceptions.DatasetNotFoundException;
 import mk.ukim.finki.climatecognize.repository.DatasetRepository;
 import mk.ukim.finki.climatecognize.service.DatasetService;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,8 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public Dataset getDatasetById(String id) {
-        return datasetRepository.findById(id).orElseThrow(() -> new RuntimeException("Dataset with that ID doesn't exist"));
+    public Dataset getDatasetById(String id) throws DatasetNotFoundException {
+        return datasetRepository.findById(id).orElseThrow(DatasetNotFoundException::new);
     }
 
     @Override
@@ -38,8 +39,8 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public Dataset deleteDatasetById(String id) {
-        Dataset dataset = datasetRepository.findById(id).orElseThrow(() -> new RuntimeException("Dataset with that ID doesn't exist"));
+    public Dataset deleteDatasetById(String id) throws DatasetNotFoundException {
+        Dataset dataset = datasetRepository.findById(id).orElseThrow(DatasetNotFoundException::new);
         datasetRepository.deleteById(id);
         return dataset;
     }
@@ -47,18 +48,10 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public void createNewDataset(String author, String name, String description, boolean isPrivate, String language, String task, String split, List<String> columns, List<DatasetEntry> rows, List<String> tags, List<String> types) {
         Dataset dataset = new Dataset(author, name, description, isPrivate, language, task, split);
-        for (String column : columns) {
-            dataset.addColumn(column);
-        }
-        for (String type : types) {
-            dataset.addType(type);
-        }
-        for (DatasetEntry entry : rows) {
-            dataset.addRow(entry);
-        }
-        for (String tag : tags) {
-            dataset.addTag(tag);
-        }
+        columns.forEach(dataset::addColumn);
+        types.forEach(dataset::addType);
+        rows.forEach(dataset::addRow);
+        tags.forEach(dataset::addTag);
         datasetRepository.save(dataset);
     }
 }

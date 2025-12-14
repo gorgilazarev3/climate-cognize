@@ -11,9 +11,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import mk.ukim.finki.climatecognize.config.JwtAuthConstants;
+import mk.ukim.finki.climatecognize.constants.JwtAuthConstants;
 import mk.ukim.finki.climatecognize.models.User;
 import mk.ukim.finki.climatecognize.models.dto.UserDetailsDto;
+import mk.ukim.finki.climatecognize.models.exceptions.PasswordsDoNotMatchException;
+import mk.ukim.finki.climatecognize.models.exceptions.UserDoesNotExistException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -58,12 +60,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             e.printStackTrace();
         }
         if (creds == null) {
-//            throw new UserNotFoundException("Invalid credentials");
-            return super.attemptAuthentication(request, response);
+            throw new UserDoesNotExistException();
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(creds.getUsername());
         if (!passwordEncoder.matches(creds.getPassword(), userDetails.getPassword())) {
-            throw new Exception("Password do not match!");
+            throw new PasswordsDoNotMatchException();
         }
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDetails.getUsername(), creds.getPassword(), userDetails.getAuthorities()));

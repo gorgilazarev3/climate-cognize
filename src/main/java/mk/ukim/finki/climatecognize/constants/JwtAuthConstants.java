@@ -1,4 +1,4 @@
-package mk.ukim.finki.climatecognize.config;
+package mk.ukim.finki.climatecognize.constants;
 
 public class JwtAuthConstants {
 
@@ -6,6 +6,9 @@ public class JwtAuthConstants {
     public static final long EXPIRATION_TIME = 864_000_000; // 10 days
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
+    public static final String DEFAULT_MAIL_EXTENSION = "@user.com";
+    public static final String JWT_RESPONSE_KEY = "jwt";
+    public static final String ROLE_RESPONSE_KEY = "role";
 
 }
 

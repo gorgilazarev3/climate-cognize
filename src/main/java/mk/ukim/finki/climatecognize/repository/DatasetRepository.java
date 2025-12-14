@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface DatasetRepository  extends MongoRepository<Dataset, String> {
-    public List<Dataset> findByAuthor(String author);
+    List<Dataset> findByAuthor(String author);
 }

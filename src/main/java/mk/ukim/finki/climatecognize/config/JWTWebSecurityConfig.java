@@ -41,6 +41,7 @@ public class JWTWebSecurityConfig {
     private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
     private final UserService userService;
 
+    // TODO: deprecated, replace with up-to-date version
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         http.cors().and().csrf().disable()
